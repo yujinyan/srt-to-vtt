@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Convert VTT to SRT</title>
+</head>
+<body>
+    <form action="" name="myForm">
+       <p>
+           <textarea name="inVTT" id="" cols="30" rows="10"></textarea>
+       </p>
+       <p>
+           <input type="button" value="convert" name="myButton">
+       </p>
+    </form>
+    <script>
+        function handleConvert(){
+            var mysub = myForm.inVTT.value;
+            newDownload(vtt2srt(mysub));
+        };
+        
+        function vtt2srt(vtt){
+            var srt = vtt.replace(/(\d)\.(\d)/g,'$1,$2');
+            var re = /\d\d:\d\d:\d\d,\d\d\d --> \d\d:\d\d:\d\d,\d\d\d/;
+            var n = srt.search(re);
+            srt = srt.substr(n);
+            return srt;
+        }
+        
+        function newDownload(txt){
+            var element = document.createElement('a');
+            element.setAttribute('href','data:text/plain;charset=utf-8,' + encodeURIComponent(txt));
+            element.setAttribute('download','subtitles.srt');
+            element.style.display='none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+        
+        myForm.myButton.addEventListener('click',handleConvert);
+    
+    
+    </script>
+</body>
+</html>
